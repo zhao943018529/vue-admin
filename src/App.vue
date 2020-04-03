@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">
-        Home
-      </router-link>
+      <router-link to="/">Home</router-link>
       |
       <router-link to="/about">About</router-link>
       <i class="fab fa-affiliatetheme" />
@@ -12,8 +10,18 @@
   </div>
 </template>
 <script>
+import { fetcher } from './utils/fetch';
+
 export default {
   name: 'App',
+  data() {
+    return {
+      value: '',
+    };
+  },
+  created() {
+    fetcher.get('/test/json').then(value => (this.value = value));
+  },
 };
 </script>
 
