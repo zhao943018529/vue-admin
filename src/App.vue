@@ -4,23 +4,28 @@
       <router-link to="/">Home</router-link>
       |
       <router-link to="/about">About</router-link>
-      <i class="fab fa-affiliatetheme" />
+      <Icon name="facebook" :brand="true" :size="32" color="blue" />
+      <Icon name="angle-double-left" />
     </div>
     <router-view />
   </div>
 </template>
 <script>
-import { fetcher } from './utils/fetch';
+import { request } from './utils/request';
+import Icon from './components/common/Icon';
 
 export default {
   name: 'App',
+  components: {
+    Icon,
+  },
   data() {
     return {
       value: '',
     };
   },
   created() {
-    fetcher.get('/test/json').then(value => (this.value = value));
+    request.get('/test/json').then(value => (this.value = value));
   },
 };
 </script>
