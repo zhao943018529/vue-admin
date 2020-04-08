@@ -7,8 +7,8 @@
   >
     <div class="nav-content" @click="toggleExpand">
       <Icon :name="data.iconName" />
-      <p v-if="!collapse" class="nav-text">{{ data.name }}</p>
-      <Icon class="nav-arrow" name="angle-down" />
+      <p v-if="!collapse || !isRoot" class="nav-text">{{ data.name }}</p>
+      <Icon v-if="!collapse" class="nav-arrow" name="angle-down" />
     </div>
     <transition name="nav-panel">
       <ul
@@ -16,13 +16,23 @@
         :class="collapse ? 'collapse' : ''"
         v-if="expand && data.children && data.children.length > 0"
       >
-        <NavLinkWrapper
-          :prefix="data.path"
-          v-for="child in data.children"
-          v-bind:key="child.path"
-          :data="child"
-          :collapse="collapse"
-        />
+        <template v-for="child in data.children">
+          <NavLinkGroup
+            v-if="child.children"
+            :data="child"
+            :prefix="joinPrefix"
+            :collapse="collapse"
+            v-bind:key="child.path"
+          />
+          <NavLink v-bind:key="child.path" :prefix="joinPrefix" :data="child" v-else />
+        </template>
+        <!-- <NavLinkWrapper1
+        :prefix="data.path"
+        v-for="child in data.children"
+        v-bind:key="child.path"
+        :data="child"
+        :collapse="collapse"
+      /> -->
       </ul>
     </transition>
   </li>
@@ -30,13 +40,17 @@
 
 <script>
 import Icon from './common/Icon';
-import NavLinkWrapper from './NavLinkWrapper';
+import NavLink from './NavLink';
+import NavLinkGroup from './NavLinkGroup';
+
+// const NavLinkWrapper1 = Vue.component('NavLinkWrapper1', NavLinkWrapper);
 
 export default {
   name: 'NavLinkGroup',
   components: {
     Icon,
-    NavLinkWrapper,
+    NavLink,
+    NavLinkGroup,
   },
   props: {
     data: Object,
@@ -49,6 +63,11 @@ export default {
       expand: false,
     };
   },
+  computed: {
+    joinPrefix() {
+      return `${this.prefix || ''}${this.data.path}`;
+    },
+  },
   methods: {
     toggleExpand() {
       this.expand = !this.expand;
@@ -59,12 +78,9 @@ export default {
       }
     },
     handleMouseLeave(evt) {
-      if (!this.$el.contains(evt.relatedTarget) && !this.isRoot) {
-        this.$parent.checkExpand();
+      if (this.collapse && !this.$el.contains(evt.relatedTarget)) {
+        this.expand = false;
       }
-    },
-    checkExpand() {
-      // if(!this.$el.contains(evt.relatedTarget) && !this.isRoot)
     },
   },
 };
@@ -94,6 +110,7 @@ export default {
 
   &.collapse {
     position: absolute;
+    z-index: 1000;
     left: 100%;
     top: 0;
   }

@@ -1,17 +1,17 @@
 <template>
   <div class="sidebar-container">
     <ul class="sidebar-content">
-      <NavLinkGroup :data="routeObject" :collapse="true" />
+      <NavLinkWrapper :data="routeObject" :collapse="true" :isRoot="true" />
     </ul>
   </div>
 </template>
 <script>
-import NavLinkGroup from './NavLinkGroup';
+import NavLinkWrapper from './NavLinkWrapper';
 
 export default {
   name: 'SideBar',
   components: {
-    NavLinkGroup,
+    NavLinkWrapper,
   },
   data() {
     return {
@@ -23,6 +23,14 @@ export default {
           {
             path: '/0',
             name: 'All',
+            children: [
+              {
+                path: '/0',
+                name: 'All',
+              },
+              { path: '/1', name: 'Todo' },
+              { path: '/2', name: 'Completed' },
+            ],
           },
           { path: '/1', name: 'Todo' },
           { path: '/2', name: 'Completed' },
@@ -35,5 +43,6 @@ export default {
 <style lang="scss" scoped>
 .sidebar-content {
   max-width: 120px;
+  padding: 0;
 }
 </style>

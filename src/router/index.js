@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+// import Home from '../views/Home.vue';
+import Layout from '../components/Layout.vue';
 
 Vue.use(VueRouter);
 
@@ -9,7 +10,18 @@ const routes = [
     path: '/',
     exact: true,
     name: 'Home',
-    component: Home,
+    component: Layout,
+    children: [
+      {
+        path: '/todos',
+        redirect: '/todos/0',
+      },
+      {
+        path: '/todos/:type',
+        name: 'Todos',
+        component: () => import('../views/todos/index.vue'),
+      },
+    ],
   },
   {
     path: '/about',
@@ -23,15 +35,6 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('../views/login/index.vue'),
-  },
-  {
-    path: '/todos',
-    redirect: '/todos/0',
-  },
-  {
-    path: '/todos/:type',
-    name: 'Todos',
-    component: () => import('../views/todos/index.vue'),
   },
 ];
 

@@ -6,6 +6,11 @@ $fa-font-path: './webfonts';
 @import './fontawesome/brands.scss';
 @import './normalize.css';
 
+html,
+body {
+  height: 100%;
+}
+
 li {
   list-style: none;
 }
