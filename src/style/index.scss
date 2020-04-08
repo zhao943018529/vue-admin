@@ -4,3 +4,8 @@ $fa-font-path: './webfonts';
 @import './fontawesome/fontawesome.scss';
 @import './fontawesome/solid.scss';
 @import './fontawesome/brands.scss';
+@import './normalize.css';
+
+li {
+  list-style: none;
+}

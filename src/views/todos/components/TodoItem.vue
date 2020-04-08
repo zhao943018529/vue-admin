@@ -1,11 +1,11 @@
 <template>
   <li class="todo-item" :class="isEditing ? 'editing' : ''">
     <div class="todo-content" @click="enterEditMode">
-      <Icon :name="todo.completed ? 'check-square' : 'square'" @click="toggleComplete" />
+      <Icon :name="todo.completed ? 'check-square' : 'square'" @click.native="toggleComplete" />
       <p class="todo-item-name">{{ todo.name }}</p>
-      <Icon name="trash-alt" @click="handleRemove" />
+      <Icon name="trash-alt" @click.native="handleRemove" />
     </div>
-    <input type="text" class="todo-item-input" :value="value" @blur="handleBlur" />
+    <input ref="inputRef" type="text" class="todo-item-input" v-model="value" @blur="handleBlur" />
   </li>
 </template>
 <script>
@@ -23,22 +23,26 @@ export default {
   data() {
     return {
       isEditing: false,
-      value: this.todo.name,
+      value: '',
     };
   },
   methods: {
     ...mapActions(['updateTodo', 'deleteTodo']),
-    toggleComplete() {
+    toggleComplete(evt) {
+      evt.stopPropagation();
       this.updateTodo({ id: this.todo.id, completed: !this.todo.completed });
     },
-    handleRemove() {
-      this.delteTodo({ id: this.props.id });
+    handleRemove(evt) {
+      evt.stopPropagation();
+      this.deleteTodo({ id: this.todo.id });
     },
     enterEditMode() {
       this.isEditing = true;
-      this.value = this.props.todo.name;
+      this.value = this.todo.name;
+      this.$nextTick(() => this.$refs['inputRef'].focus());
     },
     handleBlur() {
+      this.updateTodo({ id: this.todo.id, name: this.value });
       this.isEditing = false;
     },
   },
@@ -48,30 +52,35 @@ export default {
 .todo-item {
   position: relative;
   font-size: 18px;
+  color: #333333;
 }
 
 .todo-content {
-  .editting & {
+  .editing & {
     display: none;
   }
   display: flex;
   align-items: center;
+
+  & > i {
+    cursor: pointer;
+  }
 }
 
 .todo-item-name {
   flex: 1;
+  padding: 6px 4px;
+  text-align: left;
+  margin: 0;
 }
 
 .todo-item-input {
   display: none;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  padding: 4px 6px;
+  height: 40px;
+  width: 100%;
+  box-sizing: border-box;
 
-  .editting & {
+  .editing & {
     display: block;
   }
 }

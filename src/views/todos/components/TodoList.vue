@@ -1,8 +1,8 @@
 <template>
   <div class="todo-list">
-    <ul class="todo-container">
-      <TodoItem v-for="todo in todos" :todo="todo" :key="todo.id" />
-    </ul>
+    <transition-group class="todo-container" tag="ul" name="todos">
+      <TodoItem v-for="todo in todos" :todo="todo" v-bind:key="todo.id" />
+    </transition-group>
   </div>
 </template>
 <script>
@@ -15,8 +15,10 @@ export default {
   components: {
     TodoItem,
   },
-  props: {
-    type: Number,
+  data() {
+    return {
+      type: parseInt(this.$route.params.type || 0),
+    };
   },
   computed: {
     ...mapState({
@@ -29,6 +31,36 @@ export default {
   methods: {
     ...mapActions(['getTodos', 'deleteTodos']),
   },
+  watch: {
+    $route(newVal) {
+      this.type = parseInt(newVal.params.type || 0);
+    },
+    type(newVal) {
+      this.getTodos({ type: newVal });
+    },
+  },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.todo-list {
+  // width: 600px;
+  // margin: 0 auto;
+}
+</style>
+
+<style lang="scss">
+.todos-enter-active,
+.todos-leave-active {
+  transition: all 0.6s;
+}
+
+.todos-enter,
+.todos-leave-to {
+  transform: translate(-100%);
+  opacity: 0;
+}
+
+.todos-move {
+  transition: transform 1s;
+}
+</style>

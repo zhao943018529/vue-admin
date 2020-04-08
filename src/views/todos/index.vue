@@ -1,7 +1,7 @@
 <template>
-  <div class="page-todo">
+  <div class="page-todos">
     <AddTodo />
-    <TodoList :type="type" />
+    <TodoList />
     <TodoFooter />
   </div>
 </template>
@@ -18,10 +18,12 @@ export default {
     TodoList,
     TodoFooter,
   },
-  computed: {
-    type() {
-      return this.$route.params.type;
-    },
-  },
 };
 </script>
+
+<style lang="scss" scoped>
+.page-todos {
+  width: 600px;
+  margin: 0 auto;
+}
+</style>

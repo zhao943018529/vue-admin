@@ -6,6 +6,7 @@
       <router-link to="/about">About</router-link>
       <Icon name="facebook" :brand="true" :size="32" color="blue" />
       <Icon name="angle-double-left" />
+      <SideBar />
     </div>
     <router-view />
   </div>
@@ -13,11 +14,13 @@
 <script>
 import { request } from './utils/request';
 import Icon from './components/common/Icon';
+import SideBar from './components/SideBar';
 
 export default {
   name: 'App',
   components: {
     Icon,
+    SideBar,
   },
   data() {
     return {
