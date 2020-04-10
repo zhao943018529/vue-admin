@@ -4,24 +4,22 @@
     :data="data"
     :isRoot="true"
     :prefix="prefix"
-    :collapse="collapse"
+    :collapsed="collapsed"
   />
-  <NavLink :prefix="prefix" :data="data" v-else />
+  <NavLink :prefix="prefix" :isSmall="collapsed" :data="data" v-else />
 </template>
 <script>
 import NavLink from './NavLink';
-import NavLinkGroup from './NavLinkGroup';
 
 export default {
   name: 'NavLinkWrapper',
   components: {
     NavLink,
-    NavLinkGroup,
   },
   props: {
     data: Object,
     prefix: String,
-    collapse: Boolean,
+    collapsed: Boolean,
   },
 };
 </script>

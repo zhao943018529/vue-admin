@@ -1,9 +1,9 @@
 <template>
   <router-link :to="(prefix || '') + data.path" v-slot="{ href, route, navigate, isActive }">
-    <li class="nav-link" :class="isActive ? 'active' : ''">
+    <li class="nav-link" :class="{ active: isActive }">
       <a class="nav-anchor" :href="href" @click="navigate">
         <Icon v-if="data.iconName != null" :class="data.iconClassName" :name="data.iconName" />
-        <span class="nav-text">{{ data.name }}</span>
+        <span v-if="!isSmall" class="nav-text">{{ data.name }}</span>
       </a>
     </li>
   </router-link>
@@ -20,7 +20,7 @@ export default {
   props: {
     data: Object,
     prefix: String,
-    collapse: Boolean,
+    isSmall: Boolean,
   },
 };
 </script>
@@ -33,6 +33,11 @@ export default {
   position: relative;
 
   &.active {
+    background: #c8c8c8;
+  }
+
+  &:hover {
+    background: #f4f4f4;
   }
 }
 
