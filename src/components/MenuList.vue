@@ -2,19 +2,19 @@
   <ul class="menu-container"></ul>
 </template>
 <script>
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 
 export default {
   name: 'MenuList',
   props: {},
   methods: {
-    renderItems() {
-      // this.$scopedSlots.default;
+    renderItem() {},
+    contains(target) {
+      return this.$el.contains(target);
     },
   },
   render() {
-    // return _.map()
-    return '';
+    return _.map();
   },
 };
 </script>

@@ -15,6 +15,7 @@
   </div>
 </template>
 <script>
+import * as _ from 'lodash';
 import Icon from './common/Icon';
 import MenuList from './MenuList';
 import Popup from './Popup';
@@ -27,10 +28,10 @@ export default {
     MenuList,
   },
   props: {
-    prefixIcon: String,
-    suffixIcon: String,
-    name: String,
+    data: Object,
     isCollapsed: Boolean,
+    getParent: Function,
+    getSubMenus: Function,
   },
   data() {
     return {
@@ -51,10 +52,21 @@ export default {
       if (!this.contains(evt.relatedTarget)) {
         this.isExpanded = false;
         // 3.如果不是进入子menu的话则需要向上递归是否需要收起面板
+        const parent = this.getParent();
+        parent.bubbleUp(evt.relatedTarget);
       }
     },
     contains(target) {
-      return this.$el.contains(target) || this.$refs['menuRef'].contains(target);
+      const subMenus = this.getSubMenus();
+
+      return (
+        this.$el.contains(target) ||
+        this.$refs['menuRef'].contains(target) ||
+        _.some(subMenus, menu => menu.contains(target))
+      );
+    },
+    collapse() {
+      this.isExpanded = false;
     },
   },
 };

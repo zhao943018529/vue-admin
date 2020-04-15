@@ -1,17 +1,25 @@
 <template>
-  <SubMenu :data="data" ref="menuRef" v-if="data.children && data.children.length > 0">
+  <SubMenu
+    :data="data"
+    ref="subMenuRef"
+    v-if="data.children && data.children.length > 0"
+    :getParent="getParent"
+    :getSubMenus="getSubMenus"
+  >
     <NestedMenu
       :isCollapsed="isCollapsed"
       v-for="child in data.children"
       :data="child"
       v-bind:key="child.value"
       :getParent="getCurrent"
+      ref="subChildren"
     ></NestedMenu>
   </SubMenu>
   <MenuItem v-else> </MenuItem>
 </template>
 
 <script>
+// import * as _ from 'lodash';
 import SubMenu from './SubMenu';
 import MenuItem from './MenuItem';
 
@@ -29,6 +37,16 @@ export default {
   methods: {
     getCurrent() {
       return this.$refs['menuRef'];
+    },
+    getSubMenus() {
+      return this.$refs['subMenuRef'];
+    },
+    contains(target) {
+      if (this.$refs['subMenuRef'] != null) {
+        return this.$refs['subMenuRef'].contains(target);
+      } else {
+        return false;
+      }
     },
   },
 };
