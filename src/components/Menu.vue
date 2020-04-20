@@ -1,6 +1,6 @@
 <template>
   <div class="menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
-    <div class="menu-trigger" ref="triggerRef">
+    <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <Icon v-if="prefixIcon != null" :name="prefixIcon" />
       <span v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
@@ -19,6 +19,7 @@
 import Icon from './common/Icon';
 import MenuList from './MenuList';
 import Popup from './Popup';
+import * as _ from 'lodash';
 
 export default {
   name: 'Menu',
@@ -32,6 +33,7 @@ export default {
     suffixIcon: String,
     name: String,
     isCollapsed: Boolean,
+    getSubMenus: Function,
   },
   data() {
     return {
@@ -39,6 +41,17 @@ export default {
     };
   },
   methods: {
+    toggleClick() {
+      if (this.isExpanded) {
+        this.deepCollapse();
+      }
+      this.isExpanded = !this.isExpanded;
+    },
+    deepCollapse() {
+      if (!this.isCollapsed) {
+        _.forEach(this.getSubMenus(), menu => menu.collapse());
+      }
+    },
     getAlignElement() {
       return this.$refs['triggerRef'];
     },
@@ -51,11 +64,19 @@ export default {
       // 1.首先要检查是否在当前面板之内 及当前下面的子面板要检查是否进入子menu
       if (!this.contains(evt.relatedTarget)) {
         this.isExpanded = false;
-        // 3.如果不是进入子menu的话则需要向上递归是否需要收起面板
       }
     },
     contains(target) {
-      return this.$el.contains(target) || this.$refs['menuRef'].contains(target);
+      return (
+        this.$el.contains(target) ||
+        this.$refs['menuRef'].contains(target) ||
+        _.some(this.getSubMenus(), subMenu => subMenu.contains(target))
+      );
+    },
+    bubbleUp(target) {
+      if (!(this.$el.contains(target) || this.$refs['menuRef'].contains(target))) {
+        this.isExpanded = false;
+      }
     },
   },
 };

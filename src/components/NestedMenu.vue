@@ -19,7 +19,7 @@
 </template>
 
 <script>
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 import SubMenu from './SubMenu';
 import MenuItem from './MenuItem';
 
@@ -36,10 +36,10 @@ export default {
   },
   methods: {
     getCurrent() {
-      return this.$refs['menuRef'];
+      return this.$refs['subMenuRef'];
     },
     getSubMenus() {
-      return this.$refs['subMenuRef'];
+      return this.$refs['subChildren'];
     },
     contains(target) {
       if (this.$refs['subMenuRef'] != null) {
@@ -47,6 +47,9 @@ export default {
       } else {
         return false;
       }
+    },
+    collapse() {
+      _.forEach(this.getSubMenus, menu => menu.collapse());
     },
   },
 };

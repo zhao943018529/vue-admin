@@ -1,6 +1,6 @@
 <template>
   <div class="menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
-    <div class="menu-trigger" ref="triggerRef">
+    <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <span v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
@@ -39,6 +39,13 @@ export default {
     };
   },
   methods: {
+    toggleClick() {
+      if (this.isExpanded) {
+        this.collapse();
+      } else {
+        this.isExpanded = true;
+      }
+    },
     getAlignElement() {
       return this.$refs['triggerRef'];
     },
@@ -66,7 +73,15 @@ export default {
       );
     },
     collapse() {
+      _.forEach(this.getSubMenus(), menu => menu.collapse());
       this.isExpanded = false;
+    },
+    bubbleUp(target) {
+      if (!(this.$el.contains(target) || this.$refs['menuRef'].contains(target))) {
+        this.isExpanded = false;
+        const parent = this.getParent();
+        parent.bubbleUp(target);
+      }
     },
   },
 };
