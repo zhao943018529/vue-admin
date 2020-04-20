@@ -3,6 +3,7 @@
     <AddTodo />
     <TodoList />
     <TodoFooter />
+    <SideBar />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import AddTodo from './components/AddTodo';
 import TodoList from './components/TodoList';
 import TodoFooter from './components/TodoFooter';
+import SideBar from '../../components/SideBar';
 
 export default {
   name: 'TodoPage',
@@ -17,6 +19,7 @@ export default {
     AddTodo,
     TodoList,
     TodoFooter,
+    SideBar,
   },
 };
 </script>

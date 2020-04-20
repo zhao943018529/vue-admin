@@ -1,10 +1,12 @@
 <template>
   <SubMenu
-    :data="data"
+    :prefixIcon="data.iconName"
+    :name="data.name"
     ref="subMenuRef"
     v-if="data.children && data.children.length > 0"
     :getParent="getParent"
     :getSubMenus="getSubMenus"
+    :isCollapsed="isCollapsed"
   >
     <NestedMenu
       :isCollapsed="isCollapsed"
@@ -15,7 +17,7 @@
       ref="subChildren"
     ></NestedMenu>
   </SubMenu>
-  <MenuItem v-else> </MenuItem>
+  <MenuItem :data="data" v-else> </MenuItem>
 </template>
 
 <script>

@@ -1,15 +1,16 @@
 <template>
   <div class="menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
+      <Icon v-if="prefixIcon != null" :name="prefixIcon" />
       <span v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
     <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
-      <MenuList ref="menuRef">
+      <MenuList ref="menuRef" :collapse="collapse" :deepContains="contains">
         <slot></slot>
       </MenuList>
     </Popup>
-    <MenuList v-else>
+    <MenuList :collapse="collapse" :deepContains="contains" v-else>
       <slot></slot>
     </MenuList>
   </div>
@@ -28,7 +29,9 @@ export default {
     MenuList,
   },
   props: {
-    data: Object,
+    prefixIcon: String,
+    suffixIcon: String,
+    name: String,
     isCollapsed: Boolean,
     getParent: Function,
     getSubMenus: Function,

@@ -1,30 +1,50 @@
 <template>
   <div class="sidebar-container" :class="sideBarStatus ? '' : 'expand'">
     <ul class="sidebar-content">
-      <NavLinkWrapper
+      <!-- <NavLinkWrapper
         v-for="link in links"
         :data="link"
         :collapsed="sideBarStatus"
         :isRoot="true"
         v-bind:key="link.path"
         :ref="getNavRef(link.path)"
-      />
+      /> -->
+      <Menu
+        :name="links[0].name"
+        :prefixIcon="links[0].iconName"
+        :isCollapsed="true"
+        :getSubMenus="getSubMenus"
+        ref="rootMenu"
+      >
+        <NestedMenu
+          ref="subMenus"
+          v-for="link in links"
+          v-bind:key="link.path"
+          :data="link"
+          :isCollapsed="true"
+          :getParent="getParent"
+        />
+      </Menu>
     </ul>
   </div>
 </template>
 <script>
 import Vue from 'vue';
-import NavLinkWrapper from './NavLinkWrapper';
-import NavLinkGroup from './NavLinkGroup';
+// import NavLinkWrapper from './NavLinkWrapper';
+// import NavLinkGroup from './NavLinkGroup';
+import NestedMenu from './NestedMenu';
+import Menu from './Menu';
 import { mapState } from 'vuex';
 // hack：解决vue recursive component
-Vue.component('NavLinkGroup', NavLinkGroup);
+// Vue.component('NavLinkGroup', NavLinkGroup);
+Vue.component('NestedMenu', NestedMenu);
 import * as _ from 'lodash';
 
 export default {
   name: 'SideBar',
   components: {
-    NavLinkWrapper,
+    Menu,
+    // NavLinkWrapper,
   },
   computed: {
     ...mapState({
@@ -66,6 +86,12 @@ export default {
   methods: {
     getNavRef(path) {
       return `navRef-${path}`;
+    },
+    getSubMenus() {
+      return this.$refs['getSubMenus'];
+    },
+    getParent() {
+      return this.$refs['rootMenu'];
     },
   },
   watch: {

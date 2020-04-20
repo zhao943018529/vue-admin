@@ -3,8 +3,17 @@ import * as _ from 'lodash';
 
 export default {
   name: 'MenuList',
-  props: {},
+  props: {
+    collapse: Function,
+    deepContains: Function,
+  },
   methods: {
+    handleMouseLeave(evt) {
+      const relatedTarget = evt.relatedTarget;
+      if (!this.deepContains(relatedTarget)) {
+        this.collapse();
+      }
+    },
     contains(target) {
       return this.$el.contains(target);
     },
@@ -16,7 +25,7 @@ export default {
     const scopedSlots = this.$scopedSlots;
     return h(
       'ul',
-      { class: 'menu-container' },
+      { class: 'menu-container', on: { mouseleave: this.handleMouseLeave } },
       _.map(scopedSlots, (item, index) => this.renderChild(h, item, index)),
     );
   },

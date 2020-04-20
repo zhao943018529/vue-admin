@@ -6,7 +6,7 @@
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
     <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
-      <MenuList ref="menuRef">
+      <MenuList ref="menuRef" :collapse="collapse" :deepContains="contains">
         <slot></slot>
       </MenuList>
     </Popup>
@@ -41,16 +41,19 @@ export default {
     };
   },
   methods: {
+    collapse() {
+      this.deepCollapse();
+      this.isExpanded = false;
+    },
     toggleClick() {
       if (this.isExpanded) {
         this.deepCollapse();
       }
+
       this.isExpanded = !this.isExpanded;
     },
     deepCollapse() {
-      if (!this.isCollapsed) {
-        _.forEach(this.getSubMenus(), menu => menu.collapse());
-      }
+      _.forEach(this.getSubMenus(), menu => menu.collapse());
     },
     getAlignElement() {
       return this.$refs['triggerRef'];
