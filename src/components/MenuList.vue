@@ -1,5 +1,11 @@
+<template>
+  <ul class="menu-container" @mouseleave="this.handleMouseLeave" @keydown="handleKeyDown">
+    <slot></slot>
+  </ul>
+</template>
 <script>
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
+import KeyCode from '../utils/KeyCode';
 
 export default {
   name: 'MenuList',
@@ -17,17 +23,26 @@ export default {
     contains(target) {
       return this.$el.contains(target);
     },
-    renderChild(h, item) {
-      return h('li', { class: 'menu-item' }, item());
+    handleKeyDown(evt) {
+      switch (evt.keyCode) {
+        case KeyCode.Up:
+          break;
+      }
     },
-  },
-  render(h) {
-    const scopedSlots = this.$scopedSlots;
-    return h(
-      'ul',
-      { class: 'menu-container', on: { mouseleave: this.handleMouseLeave } },
-      _.map(scopedSlots, (item, index) => this.renderChild(h, item, index)),
-    );
   },
 };
 </script>
+<style lang="scss">
+.menu-container {
+  background: #ffffff;
+  box-shadow: 2px 2px 2px #c8c8c8;
+}
+
+.menu-item {
+  padding: 6px 12px;
+
+  &:hover {
+    background: #c8c8c8;
+  }
+}
+</style>

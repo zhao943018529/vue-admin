@@ -88,7 +88,7 @@ export default {
       return `navRef-${path}`;
     },
     getSubMenus() {
-      return this.$refs['getSubMenus'];
+      return this.$refs['subMenus'];
     },
     getParent() {
       return this.$refs['rootMenu'];

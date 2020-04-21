@@ -2,7 +2,7 @@
   <div class="menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <Icon v-if="prefixIcon != null" :name="prefixIcon" />
-      <span v-if="name">{{ name }}</span>
+      <span class="menu-trigger-text" v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
     <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
@@ -85,7 +85,11 @@ export default {
 };
 </script>
 <style lang="scss">
+.menu {
+  display: inline-block;
+}
 .menu-trigger {
   display: flex;
+  align-items: center;
 }
 </style>

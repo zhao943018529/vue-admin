@@ -1,14 +1,20 @@
 <template>
-  <div class="menu-item">
-    <span>{{ data.name }}</span>
-  </div>
+  <li class="menu-item-content" tabindex="-1" @click="handleClick">
+    <slot></slot>
+  </li>
 </template>
 <script>
 export default {
   name: 'MenuItem',
   props: {
-    data: Object,
+    onExecute: Function,
   },
-  methods: {},
+  methods: {
+    handleClick() {
+      if (this.onExecute != null) {
+        this.onExecute();
+      }
+    },
+  },
 };
 </script>

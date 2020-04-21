@@ -17,7 +17,7 @@
       ref="subChildren"
     ></NestedMenu>
   </SubMenu>
-  <MenuItem :data="data" v-else> </MenuItem>
+  <MenuItem :onExecute="data.callback" v-else> </MenuItem>
 </template>
 
 <script>

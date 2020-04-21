@@ -1,8 +1,8 @@
 <template>
-  <div class="menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+  <li class="sub-menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <Icon v-if="prefixIcon != null" :name="prefixIcon" />
-      <span v-if="name">{{ name }}</span>
+      <span class="menu-trigger-text" v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
     <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
@@ -13,7 +13,7 @@
     <MenuList :collapse="collapse" :deepContains="contains" v-else>
       <slot></slot>
     </MenuList>
-  </div>
+  </li>
 </template>
 <script>
 import * as _ from 'lodash';
@@ -77,7 +77,7 @@ export default {
     },
     collapse() {
       _.forEach(this.getSubMenus(), menu => menu.collapse());
-      this.isExpanded = false;
+      this.bubbleUp();
     },
     bubbleUp(target) {
       if (!(this.$el.contains(target) || this.$refs['menuRef'].contains(target))) {
@@ -90,7 +90,14 @@ export default {
 };
 </script>
 <style lang="scss">
+.sub-menu {
+}
+
 .menu-trigger {
   display: flex;
+}
+
+.menu-trigger-text {
+  margin-left: 4px;
 }
 </style>
