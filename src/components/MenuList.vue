@@ -11,14 +11,12 @@ export default {
   name: 'MenuList',
   props: {
     collapse: Function,
-    deepContains: Function,
+    // deepContains: Function,
   },
   methods: {
     handleMouseLeave(evt) {
-      const relatedTarget = evt.relatedTarget;
-      if (!this.deepContains(relatedTarget)) {
-        this.collapse();
-      }
+      // const relatedTarget = evt.relatedTarget;
+      this.collapse(evt.relatedTarget);
     },
     contains(target) {
       return this.$el.contains(target);

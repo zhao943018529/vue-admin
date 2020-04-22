@@ -17,19 +17,26 @@
       ref="subChildren"
     ></NestedMenu>
   </SubMenu>
-  <MenuItem :onExecute="data.callback" v-else> </MenuItem>
+  <MenuItem :getMenu="getParent" :onExecute="data.callback" v-else>
+    <div class="submenu-item">
+      <Icon v-if="data.iconName != null" :name="data.iconName" />
+      <span>{{ data.name }}</span>
+    </div>
+  </MenuItem>
 </template>
 
 <script>
 import * as _ from 'lodash';
 import SubMenu from './SubMenu';
 import MenuItem from './MenuItem';
+import Icon from './common/Icon';
 
 export default {
   name: 'NestedMenu',
   components: {
     SubMenu,
     MenuItem,
+    Icon,
   },
   props: {
     data: Object,

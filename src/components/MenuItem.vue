@@ -8,11 +8,15 @@ export default {
   name: 'MenuItem',
   props: {
     onExecute: Function,
+    getMenu: Function,
   },
   methods: {
     handleClick() {
       if (this.onExecute != null) {
         this.onExecute();
+        if (this.getMenu != null) {
+          // const menu = this.getMenu();
+        }
       }
     },
   },

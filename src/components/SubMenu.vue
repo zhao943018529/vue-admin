@@ -6,11 +6,11 @@
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
     <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
-      <MenuList ref="menuRef" :collapse="collapse" :deepContains="contains">
+      <MenuList ref="menuRef" :collapse="bubbleUp" :deepContains="contains">
         <slot></slot>
       </MenuList>
     </Popup>
-    <MenuList :collapse="collapse" :deepContains="contains" v-else>
+    <MenuList :collapse="bubbleUp" :deepContains="contains" v-else>
       <slot></slot>
     </MenuList>
   </li>
@@ -58,6 +58,8 @@ export default {
       }
     },
     handleMouseLeave(evt) {
+      // 阻止冒泡 防止触发MenuList 的mouseleave
+      evt.stopPropagation();
       // 1.首先要检查是否在当前面板之内 及当前下面的子面板要检查是否进入子menu
       if (!this.contains(evt.relatedTarget)) {
         this.isExpanded = false;
@@ -76,11 +78,11 @@ export default {
       );
     },
     collapse() {
-      _.forEach(this.getSubMenus(), menu => menu.collapse());
-      this.bubbleUp();
+      // _.forEach(this.getSubMenus(), menu => menu.collapse());
+      // this.bubbleUp();
     },
     bubbleUp(target) {
-      if (!(this.$el.contains(target) || this.$refs['menuRef'].contains(target))) {
+      if (!this.contains(target)) {
         this.isExpanded = false;
         const parent = this.getParent();
         parent.bubbleUp(target);
