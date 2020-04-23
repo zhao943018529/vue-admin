@@ -6,10 +6,10 @@
     v-if="data.children && data.children.length > 0"
     :getParent="getParent"
     :getSubMenus="getSubMenus"
-    :isCollapsed="isCollapsed"
+    :inline="inline"
   >
     <NestedMenu
-      :isCollapsed="isCollapsed"
+      :inline="inline"
       v-for="child in data.children"
       :data="child"
       v-bind:key="child.value"
@@ -41,7 +41,7 @@ export default {
   props: {
     data: Object,
     getParent: Function,
-    isCollapsed: Boolean,
+    inline: Boolean,
   },
   methods: {
     getCurrent() {

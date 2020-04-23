@@ -12,7 +12,7 @@
       <Menu
         :name="links[0].name"
         :prefixIcon="links[0].iconName"
-        :isCollapsed="true"
+        :inline="true"
         :getSubMenus="getSubMenus"
         ref="rootMenu"
       >
@@ -21,7 +21,7 @@
           v-for="link in links"
           v-bind:key="link.path"
           :data="link"
-          :isCollapsed="true"
+          :inline="true"
           :getParent="getParent"
         />
       </Menu>

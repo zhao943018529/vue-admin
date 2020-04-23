@@ -1,5 +1,9 @@
 <template>
-  <ul class="menu-container" @mouseleave="this.handleMouseLeave" @keydown="handleKeyDown">
+  <ul
+    class="menu-container"
+    @mouseleave="inline ? null : handleMouseLeave"
+    @keydown="handleKeyDown"
+  >
     <slot></slot>
   </ul>
 </template>
@@ -11,6 +15,7 @@ export default {
   name: 'MenuList',
   props: {
     collapse: Function,
+    inline: Boolean,
     // deepContains: Function,
   },
   methods: {

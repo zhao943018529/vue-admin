@@ -1,16 +1,20 @@
 <template>
-  <div class="menu" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+  <div
+    class="menu"
+    @mouseenter="inline ? null : handleMouseEnter"
+    @mouseleave="inline ? null : handleMouseLeave"
+  >
     <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <Icon v-if="prefixIcon != null" :name="prefixIcon" />
       <span class="menu-trigger-text" v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
-    <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
-      <MenuList ref="menuRef" :collapse="collapse">
+    <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="!inline">
+      <MenuList ref="menuRef" :inline="inline" :collapse="collapse">
         <slot></slot>
       </MenuList>
     </Popup>
-    <MenuList v-else>
+    <MenuList :inline="inline" ref="menuRef" v-else>
       <slot></slot>
     </MenuList>
   </div>
@@ -32,7 +36,7 @@ export default {
     prefixIcon: String,
     suffixIcon: String,
     name: String,
-    isCollapsed: Boolean,
+    inline: Boolean,
     getSubMenus: Function,
   },
   data() {
