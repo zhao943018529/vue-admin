@@ -41,11 +41,12 @@ export default {
 <style lang="scss">
 .popup-container {
   position: absolute;
+  box-shadow: 2px 2px 2px #c8c8c8;
 }
 
 .popup-enter-active,
 .popup-leave-active {
-  transition: all 0.5s;
+  transition: all 0.3s;
 }
 
 .popup-enter,

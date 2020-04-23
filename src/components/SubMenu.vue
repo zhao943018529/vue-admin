@@ -1,20 +1,16 @@
 <template>
-  <li
-    class="sub-menu"
-    @mouseenter="inline ? null : handleMouseEnter"
-    @mouseleave="inline ? null : handleMouseLeave"
-  >
+  <li class="sub-menu" v-on="getEvents()">
     <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <Icon v-if="prefixIcon != null" :name="prefixIcon" />
       <span class="menu-trigger-text" v-if="name">{{ name }}</span>
       <Icon v-if="suffixIcon != null" :name="suffixIcon" />
     </div>
-    <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="isCollapsed">
+    <Popup :visible="isExpanded" :getAlignElement="getAlignElement" v-if="!inline">
       <MenuList ref="menuRef" :inline="inline" :collapse="bubbleUp">
         <slot></slot>
       </MenuList>
     </Popup>
-    <MenuList :inline="inline" :collapse="bubbleUp" v-else>
+    <MenuList :inline="inline" :isExpanded="isExpanded" :collapse="bubbleUp" v-else>
       <slot></slot>
     </MenuList>
   </li>
@@ -46,18 +42,24 @@ export default {
     };
   },
   methods: {
-    toggleClick() {
-      if (this.isExpanded) {
-        this.collapse();
+    getEvents() {
+      if (this.inline) {
+        return null;
       } else {
-        this.isExpanded = true;
+        return {
+          mouseenter: this.handleMouseEnter,
+          mouseleave: this.handleMouseLeave,
+        };
       }
+    },
+    toggleClick() {
+      this.isExpanded = !this.isExpanded;
     },
     getAlignElement() {
       return this.$refs['triggerRef'];
     },
     handleMouseEnter() {
-      if (this.isCollapsed && !this.isExpanded) {
+      if (!this.isExpanded) {
         this.isExpanded = true;
       }
     },

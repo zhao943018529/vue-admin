@@ -1,18 +1,10 @@
 <template>
   <div class="sidebar-container" :class="sideBarStatus ? '' : 'expand'">
     <ul class="sidebar-content">
-      <!-- <NavLinkWrapper
-        v-for="link in links"
-        :data="link"
-        :collapsed="sideBarStatus"
-        :isRoot="true"
-        v-bind:key="link.path"
-        :ref="getNavRef(link.path)"
-      /> -->
       <Menu
         :name="links[0].name"
         :prefixIcon="links[0].iconName"
-        :inline="true"
+        :inline="false"
         :getSubMenus="getSubMenus"
         ref="rootMenu"
       >
@@ -21,7 +13,7 @@
           v-for="link in links"
           v-bind:key="link.path"
           :data="link"
-          :inline="true"
+          :inline="false"
           :getParent="getParent"
         />
       </Menu>

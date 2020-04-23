@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="menu"
-    @mouseenter="inline ? null : handleMouseEnter"
-    @mouseleave="inline ? null : handleMouseLeave"
-  >
+  <div class="menu" v-on="getEvents()">
     <div class="menu-trigger" ref="triggerRef" @click="toggleClick">
       <Icon v-if="prefixIcon != null" :name="prefixIcon" />
       <span class="menu-trigger-text" v-if="name">{{ name }}</span>
@@ -14,7 +10,7 @@
         <slot></slot>
       </MenuList>
     </Popup>
-    <MenuList :inline="inline" ref="menuRef" v-else>
+    <MenuList :isExpanded="isExpanded" :inline="inline" ref="menuRef" v-else>
       <slot></slot>
     </MenuList>
   </div>
@@ -45,6 +41,16 @@ export default {
     };
   },
   methods: {
+    getEvents() {
+      if (this.inline) {
+        return null;
+      } else {
+        return {
+          mouseenter: this.handleMouseEnter,
+          mouseleave: this.handleMouseLeave,
+        };
+      }
+    },
     collapse(target) {
       // this.deepCollapse();
       if (!this.contains(target)) {
@@ -65,7 +71,7 @@ export default {
       return this.$refs['triggerRef'];
     },
     handleMouseEnter() {
-      if (this.isCollapsed && !this.isExpanded) {
+      if (!this.isExpanded) {
         this.isExpanded = true;
       }
     },
@@ -97,5 +103,6 @@ export default {
 .menu-trigger {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 </style>
